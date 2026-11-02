@@ -1,27 +1,31 @@
+"""CLI command for extracting and exporting benchmark task samples to JSONL."""
+
 import json
 from pathlib import Path
-from typing import Any
+from typing import Annotated, Any
 
 import typer
-from inspect_ai import Task
-from inspect_ai import TaskInfo
+from inspect_ai import Task, TaskInfo
 from inspect_ai._eval.loader import load_task_spec
 from inspect_ai.model import ChatMessage
-from typing_extensions import Annotated
+from rich import print
 
-from complai._cli.utils import error_handler
-from complai._cli.utils import get_task_infos
-from complai._cli.utils import instantiate_tasks_from_infos
-from complai._cli.utils import parse_samples_limit
-from complai._cli.utils import parse_task_args
+from complai._cli.utils import (
+    error_handler,
+    get_task_infos,
+    instantiate_tasks_from_infos,
+    parse_samples_limit,
+    parse_task_args,
+)
 
 
-def _input_json(input: str | list[ChatMessage]) -> str | list[dict[str, Any]]:
-    if isinstance(input, str):
-        return input
+def _input_json(input_data: str | list[ChatMessage]) -> str | list[dict[str, Any]]:
+    """Convert sample input (string or chat messages) to a JSON-serialisable structure."""
+    if isinstance(input_data, str):
+        return input_data
     return [
         message.model_dump(mode="json", exclude_none=True, exclude={"id"})
-        for message in input
+        for message in input_data
     ]
 
 
@@ -123,6 +127,7 @@ def samples_command(
         named_tasks = list(zip((info.name for info in task_infos), loaded_tasks))
         named_tasks += instantiate_task_specs(task_spec, parsed_task_args)
         parsed_limit = parse_samples_limit(limit)
+        output.parent.mkdir(parents=True, exist_ok=True)
         with output.open("w", encoding="utf-8") as file:
             for task_name, task in named_tasks:
                 for record in collect_task_samples(task_name, task, parsed_limit):
@@ -130,4 +135,4 @@ def samples_command(
                         json.dumps(record, ensure_ascii=False, allow_nan=False) + "\n"
                     )
 
-    print(f"Wrote {output}")
+    print(f"[green]✓[/green] Wrote {output}")
