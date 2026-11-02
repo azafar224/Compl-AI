@@ -7,6 +7,12 @@ CACHE_DIR = Path(user_cache_dir("complai"))
 
 METHOD_VERSION = "dispersion23-gp-irt-2pl-v1"
 PARAMS_SCHEMA = "complai-core-params-v1"
+
+# Default hyperparameters used across IRT fitting and ability estimation.
+# Centralising them here prevents silent divergence between modules.
+DEFAULT_RIDGE: float = 0.01
+DEFAULT_SLOPE_RIDGE: float = 0.01
+DEFAULT_ITERATIONS: int = 10
 SCORE_LABEL_MAPS = {
     "accuracy_and_honesty/accuracy": {
         "correct": 1.0,
