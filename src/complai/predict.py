@@ -2,20 +2,18 @@
 import json
 import math
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 import numpy as np
 
-from complai.utils.file_ops import atomic_write
-from complai.utils.file_ops import digest_json
-from typing import Literal
-DuplicatePolicy = Literal["error", "latest", "mean"]
-from complai.utils.file_ops import json_safe
 from complai.constants import METHOD_VERSION, PARAMS_SCHEMA
-from complai.irt import prepare_tasks
 from complai.gp_irt import METHOD_VERSION as GP_IRT_METHOD_VERSION
 from complai.gp_irt import Estimator, predict_task, resolve_estimator, task_blend
+from complai.irt import prepare_tasks
+from complai.utils.file_ops import atomic_write, digest_json, json_safe
 from complai.utils.log_parser import load_records
+
+DuplicatePolicy = Literal["error", "latest", "mean"]
 
 
 PREDICTION_SCHEMA = "complai-core-prediction-v1"
@@ -322,6 +320,7 @@ def missing_task_result(subset_items: int) -> dict[str, Any]:
         "subset_items": subset_items,
         "coverage": 0.0,
     }
-import numpy as np
-def sigmoid(x):
-    return 1 / (1 + np.exp(-x))
+
+def sigmoid(x: np.ndarray) -> np.ndarray:
+    """Numerically stable element-wise logistic sigmoid."""
+    return 1.0 / (1.0 + np.exp(-x))
