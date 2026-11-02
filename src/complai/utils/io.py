@@ -1,24 +1,13 @@
-import os
+"""I/O routines for serialising fitted IRT parameters and evaluation subsets."""
+
 import json
-import tempfile
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+from complai.utils.file_ops import atomic_write
+
 if TYPE_CHECKING:
     from complai.irt import FitResult
-
-def atomic_write(path: Path, content: str) -> None:
-    """Write text through a temporary file and atomic replacement."""
-    descriptor, temporary = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
-    try:
-        with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
-            handle.write(content)
-            handle.flush()
-            os.fsync(handle.fileno())
-        os.replace(temporary, path)
-    except Exception:
-        Path(temporary).unlink(missing_ok=True)
-        raise
 
 def check_output_available(
     output_dir: Path
