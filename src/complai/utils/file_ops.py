@@ -1,6 +1,15 @@
+"""Utility helpers for atomic file I/O, JSON hashing, and safe serialisation."""
+
+import hashlib
+import json
+import math
 import os
 import tempfile
 from pathlib import Path
+from typing import Any
+
+import numpy as np
+
 
 def atomic_write(path: Path, content: str) -> None:
     """Write text through a temporary file and atomic replacement."""
@@ -14,9 +23,7 @@ def atomic_write(path: Path, content: str) -> None:
     except Exception:
         Path(temporary).unlink(missing_ok=True)
         raise
-import json
-import hashlib
-from typing import Any
+
 
 def digest_json(value: Any) -> str:
     """Return a deterministic SHA-256 digest for a JSON value."""
@@ -24,10 +31,10 @@ def digest_json(value: Any) -> str:
         value, sort_keys=True, separators=(",", ":"), ensure_ascii=False
     ).encode()
     return hashlib.sha256(encoded).hexdigest()
-import math
-import numpy as np
+
+
 def json_safe(value: Any) -> Any:
-    """Convert NumPy and non-finite values to standard JSON values."""
+    """Convert NumPy and non-finite values to standard JSON-serialisable types."""
     if isinstance(value, dict):
         return {str(key): json_safe(item) for key, item in value.items()}
     if isinstance(value, (list, tuple)):
