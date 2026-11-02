@@ -1,3 +1,6 @@
+"""CLI command for predicting full benchmark scores from subset evaluation logs."""
+
+import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Annotated, Literal
@@ -42,12 +45,11 @@ def predict_command(
         # Auto-resolve bundled data paths if not provided
         data_dir = Path(__file__).parent.parent / "data"
         if params is None or subset is None:
-            import json
             config_path = data_dir / "config.json"
             default_version = "core.v1"
             if config_path.exists():
                 try:
-                    with open(config_path, "r") as f:
+                    with open(config_path, "r", encoding="utf-8") as f:
                         cfg = json.load(f)
                         default_version = cfg.get("default_subset", default_version)
                 except Exception:
@@ -76,4 +78,4 @@ def predict_command(
                     records.records_path, params, subset, duplicate_policy=duplicates, estimator=estimator
                 )
         output_path = write_prediction(result, output)
-        print(f"Wrote {output_path} ({len(result['models'])} model(s))")
+        print(f"[green]✓[/green] Wrote {output_path} ({len(result['models'])} model(s))")
