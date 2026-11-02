@@ -1,11 +1,15 @@
+"""Compl-AI command-line interface entry point."""
+
+import sys
+from pathlib import Path
+
 import typer
 from inspect_ai._util.dotenv import init_dotenv
 
-from complai._cli.predict import predict_command
 from complai._cli.eval import eval_command
 from complai._cli.list import list_command
+from complai._cli.predict import predict_command
 from complai._cli.samples import samples_command
-
 
 app = typer.Typer(rich_markup_mode="markdown")
 
@@ -13,11 +17,6 @@ app.command("eval")(eval_command)
 app.command("list")(list_command)
 app.command("samples")(samples_command)
 app.command("predict")(predict_command)
-
-
-
-import sys
-from pathlib import Path
 
 # Conditionally load maintainer tools if we are in the source repository
 _repo_root = Path(__file__).resolve().parent.parent.parent.parent
