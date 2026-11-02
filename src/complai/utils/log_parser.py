@@ -1,15 +1,10 @@
+"""Parser and preprocessor for inspect-ai evaluation logs and sample records."""
+
 import collections
-
-from typing import Literal
-DuplicatePolicy = Literal["error", "latest", "mean"]
-import math
-import numpy as np
-from typing import Any
-from complai.constants import SCORE_LABEL_MAPS
-
 import hashlib
 import importlib.metadata
 import json
+import math
 import os
 import re
 import tempfile
@@ -18,15 +13,21 @@ from collections import Counter
 from collections.abc import Iterator
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
-from zipfile import BadZipFile
-from zipfile import ZipFile
+from typing import Any, Literal
+from zipfile import BadZipFile, ZipFile
 
 import ijson  # type: ignore[import-untyped]
-from inspect_ai.log import read_eval_log
-from inspect_ai.log import read_eval_log_sample
-from inspect_ai.log import read_eval_log_sample_summaries
+import numpy as np
+from inspect_ai.log import (
+    read_eval_log,
+    read_eval_log_sample,
+    read_eval_log_sample_summaries,
+)
 from tqdm import tqdm
+
+from complai.constants import SCORE_LABEL_MAPS
+
+DuplicatePolicy = Literal["error", "latest", "mean"]
 
 
 RECORDS_SCHEMA = "complai.utils.log_parser-v1"
