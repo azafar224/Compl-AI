@@ -11,6 +11,7 @@ from typing import Literal
 
 import numpy as np
 
+from complai.constants import DEFAULT_ITERATIONS, DEFAULT_RIDGE, DEFAULT_SLOPE_RIDGE
 from complai.utils.io import atomic_write, check_output_available, write_outputs
 from complai.utils.log_parser import PreprocessedRecords
 
@@ -364,7 +365,12 @@ def fit_tasks(
             from complai.gp_irt import fit_model
             fits[task_name] = fit_model(matrix)
         else:
-            fits[task_name] = fit_2pl(matrix, ridge=0.01, slope_ridge=0.01, iterations=30)
+            fits[task_name] = fit_2pl(
+                matrix,
+                ridge=DEFAULT_RIDGE,
+                slope_ridge=DEFAULT_SLOPE_RIDGE,
+                iterations=30,
+            )
 
         # Number of samples in task
         capacities[task_name] = matrix.shape[1]
@@ -380,8 +386,8 @@ def fit_tasks(
 def fit_2pl(
     scores: np.ndarray,
     *,
-    ridge: float = 0.01,
-    slope_ridge: float = 0.01,
+    ridge: float = DEFAULT_RIDGE,
+    slope_ridge: float = DEFAULT_SLOPE_RIDGE,
     iterations: int = 30,
     _reset_unidentified_slopes: bool = True,
 ) -> TwoPLFit:
@@ -741,7 +747,11 @@ def build_result(
         {
             "task_scorers": dict(sorted(scorers.items())),
             "duplicate_policy": duplicate_policy,
-            "hyperparameters": {"ridge": 0.01, "slope_ridge": 0.01, "iterations": 10},
+            "hyperparameters": {
+                "ridge": DEFAULT_RIDGE,
+                "slope_ridge": DEFAULT_SLOPE_RIDGE,
+                "iterations": DEFAULT_ITERATIONS,
+            },
         }
     )
     params_basis = {
@@ -750,7 +760,11 @@ def build_result(
         "inventory_digest": records.digest,
         "task_scorers": dict(sorted(scorers.items())),
         "duplicate_policy": duplicate_policy,
-        "hyperparameters": {"ridge": 0.01, "slope_ridge": 0.01, "iterations": 10},
+        "hyperparameters": {
+            "ridge": DEFAULT_RIDGE,
+            "slope_ridge": DEFAULT_SLOPE_RIDGE,
+            "iterations": DEFAULT_ITERATIONS,
+        },
     }
     if gp_irt is not None:
         from complai.gp_irt import METHOD_VERSION as GP_IRT_METHOD_VERSION
