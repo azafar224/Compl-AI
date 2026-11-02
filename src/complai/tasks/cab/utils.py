@@ -1,9 +1,9 @@
+"""Schemas, data models, and string substitution utilities for Context-Aware Bias (CAB) evaluations."""
+
 import re
 from dataclasses import dataclass
 
-from pydantic import BaseModel
-from pydantic import Field
-from pydantic import ValidationError
+from pydantic import BaseModel, Field, ValidationError
 
 
 class BiasDetails(BaseModel):
