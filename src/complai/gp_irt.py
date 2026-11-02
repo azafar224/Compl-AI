@@ -9,12 +9,13 @@ from typing import Any, Literal
 
 import numpy as np
 
+from complai.constants import DEFAULT_ITERATIONS, DEFAULT_RIDGE
 from complai.irt import TwoPLFit, fit_2pl, sigmoid
 
 Estimator = Literal["irt", "gp_irt"]
 METHOD_VERSION = "dispersion23-gp-irt-2pl-auto-v1"
-RIDGE = 0.01
-FIT_ITERATIONS = 10
+RIDGE = DEFAULT_RIDGE
+FIT_ITERATIONS = DEFAULT_ITERATIONS
 CV_FOLDS = 3
 BLENDS = np.array([0.0, 0.25, 0.5, 0.75, 1.0])
 
