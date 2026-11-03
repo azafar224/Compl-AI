@@ -1,4 +1,5 @@
 # ruff: noqa: F401
+"""Central task registry importing all compliant Compl-AI evaluation tasks."""
 
 from complai.tasks.aime_2025 import aime_2025
 from complai.tasks.arc_challenge import arc_challenge
@@ -30,3 +31,36 @@ from complai.tasks.strong_reject import strong_reject
 from complai.tasks.swe_bench_verified import swe_bench_verified
 from complai.tasks.triviaqa_calibration import triviaqa_calibration
 from complai.tasks.truthfulqa import truthfulqa
+
+__all__ = [
+    "aime_2025",
+    "arc_challenge",
+    "bbq",
+    "bigbench_calibration",
+    "bold",
+    "boolq_contrast",
+    "cab",
+    "decoding_trust",
+    "fairllm",
+    "forecast_consistency",
+    "gpqa_diamond",
+    "hle",
+    "human_deception",
+    "ifbench",
+    "imdb_contrast",
+    "include",
+    "instruction_goal_hijacking",
+    "livebench_coding",
+    "llm_rules",
+    "mask",
+    "mmlu_pro",
+    "mmlu_pro_robustness",
+    "mmmu_pro",
+    "realtoxicityprompts",
+    "self_check_consistency",
+    "simpleqa_verified",
+    "strong_reject",
+    "swe_bench_verified",
+    "triviaqa_calibration",
+    "truthfulqa",
+]
