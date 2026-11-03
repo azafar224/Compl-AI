@@ -1,9 +1,13 @@
+"""Configuration loader and task allocation mapping for subset minification."""
+
 import json
 from pathlib import Path
+from typing import Any
 
-DEFAULT_SUBSET_CONFIG = Path(__file__).with_name("subset_config.json")
+DEFAULT_SUBSET_CONFIG: Path = Path(__file__).with_name("subset_config.json")
 
-def _load_config(path: Path | None = None) -> dict:
+
+def _load_config(path: Path | None = None) -> dict[str, Any]:
     path = path or DEFAULT_SUBSET_CONFIG
     if not path.exists():
         raise FileNotFoundError(f"Configuration file does not exist: {path}")
