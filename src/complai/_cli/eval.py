@@ -1,27 +1,28 @@
+"""CLI command for evaluating models against Compl-AI benchmark tasks."""
+
 from pathlib import Path
-from typing import Annotated
-from typing import cast
-from typing import Literal
+from typing import Annotated, Literal, cast
 
 import typer
-from inspect_ai import eval_set
-from inspect_ai import TaskInfo
+from inspect_ai import TaskInfo, eval_set
 from inspect_ai._cli.util import parse_cli_config
 from inspect_ai.model import CachePolicy
 from rich import print
 
-from complai._cli.utils import apply_eval_subset
-from complai._cli.utils import bool_or_float
-from complai._cli.utils import error_handler
-from complai._cli.utils import get_log_dir
-from complai._cli.utils import get_task_infos
-from complai._cli.utils import instantiate_tasks_from_infos
-from complai._cli.utils import parse_sample_id
-from complai._cli.utils import parse_samples_limit
-from complai._cli.utils import parse_task_args
-from complai._cli.utils import patch_display_results
-from complai._cli.utils import read_eval_subset
-from complai._cli.utils import validate_model_args
+from complai._cli.utils import (
+    apply_eval_subset,
+    bool_or_float,
+    error_handler,
+    get_log_dir,
+    get_task_infos,
+    instantiate_tasks_from_infos,
+    parse_sample_id,
+    parse_samples_limit,
+    parse_task_args,
+    patch_display_results,
+    read_eval_subset,
+    validate_model_args,
+)
 
 
 def eval_command(
